@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Support Hub</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">N</div>
+          <div>
+            <strong>Nexus</strong>
+            <small>Support Hub</small>
+          </div>
+        </div>
+        <nav>
+          <button class="nav-item active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="tickets">Tickets</button>
+          <button class="nav-item" data-view="panels">Painéis</button>
+          <button class="nav-item" data-view="settings">Configurações</button>
+          <button class="nav-item" data-view="logs">Logs</button>
+        </nav>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <h1>Nexus Support Hub</h1>
+            <p>Gerenciamento de atendimento e bot Discord</p>
+          </div>
+          <button id="logoutBtn" class="secondary-btn">Sair</button>
+        </header>
+
+        <section id="loginView" class="card login-card hidden">
+          <h2>Login administrativo</h2>
+          <form id="loginForm">
+            <label>
+              E-mail
+              <input type="email" id="emailInput" value="admin@local.test" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="passwordInput" value="change-me-now" required />
+            </label>
+            <button type="submit" class="primary-btn">Entrar</button>
+          </form>
+        </section>
+
+        <div id="appView" class="hidden">
+          <section id="dashboard" class="view active">
+            <div class="stats-grid" id="statsGrid"></div>
+            <div class="split-grid">
+              <div class="card">
+                <h3>Últimas atividades</h3>
+                <ul id="activityList" class="list"></ul>
+              </div>
+              <div class="card">
+                <h3>Tickets recentes</h3>
+                <ul id="recentTicketsList" class="list"></ul>
+              </div>
+            </div>
+          </section>
+
+          <section id="tickets" class="view">
+            <div class="card">
+              <div class="section-header">
+                <h3>Tickets</h3>
+                <button id="createTicketBtn" class="primary-btn">Novo ticket</button>
+              </div>
+              <div id="ticketsList" class="table-container"></div>
+            </div>
+          </section>
+
+          <section id="panels" class="view">
+            <div class="card">
+              <div class="section-header">
+                <h3>Painéis</h3>
+                <button id="createPanelBtn" class="primary-btn">Novo painel</button>
+              </div>
+              <div id="panelsList" class="table-container"></div>
+            </div>
+          </section>
+
+          <section id="settings" class="view">
+            <div class="card">
+              <h3>Configurações</h3>
+              <form id="settingsForm" class="settings-form"></form>
+            </div>
+          </section>
+
+          <section id="logs" class="view">
+            <div class="card">
+              <h3>Logs e auditoria</h3>
+              <div id="logsList" class="table-container"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

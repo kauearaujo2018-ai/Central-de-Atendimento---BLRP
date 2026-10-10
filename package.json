@@ -1,0 +1,30 @@
+{
+  "name": "nexus-support-hub",
+  "version": "1.0.0",
+  "description": "Dashboard administrativo com tickets, bot Discord e sincronização",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "lint": "node --check src/server.js"
+  },
+  "keywords": [
+    "discord",
+    "support",
+    "tickets",
+    "dashboard",
+    "base44"
+  ],
+  "author": "kauearaujo2018-ai",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
