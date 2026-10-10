@@ -1,61 +1,78 @@
-# Bot Discord — Nexus Support Hub
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config();
 
-Este diretório contém o bot responsável por publicar painéis, receber comandos de suporte e sincronizar status com o painel web.
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.DirectMessages,
+  ],
+});
 
-## Requisitos
+client.commands = new Collection();
 
-- Node.js 18+
-- Discord Developer Portal com bot criado
-- Servidor Discord com permissões apropriadas
-- URL da API web válida
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-## Configuração
+console.log(`📁 Carregando ${commandFiles.length} comandos...\n`);
+for (const file of commandFiles) {
+  const filePath = path.join(commandsPath, file);
+  const command = require(filePath);
+  client.commands.set(command.data.name, command);
+  console.log(`  ✓ ${command.data.name}`);
+}
 
-1. Copie `.env.example` para `.env`
-2. Ajuste os valores de:
-   - `BOT_TOKEN`
-   - `CLIENT_ID`
-   - `GUILD_ID`
-   - `API_URL`
-   - `BOT_API_KEY`
-3. Instale as dependências:
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
-```bash
-npm install
-```
+console.log(`\n📁 Carregando ${eventFiles.length} eventos...\n`);
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  console.log(`  ✓ ${event.name}`);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
+}
 
-4. Inicie o bot:
+if (!process.env.BOT_TOKEN) {
+  console.error('\n❌ Erro: BOT_TOKEN não está configurado no .env');
+  process.exit(1);
+}
 
-```bash
-npm start
-```
+if (!process.env.CLIENT_ID) {
+  console.error('❌ Erro: CLIENT_ID não está configurado no .env');
+  process.exit(1);
+}
 
-## Permissões mínimas recomendadas
+if (!process.env.GUILD_ID) {
+  console.error('❌ Erro: GUILD_ID não está configurado no .env');
+  process.exit(1);
+}
 
-- View Channel
-- Send Messages
-- Manage Channels
-- Manage Roles
-- Read Message History
-- Embed Links
-- Use External Emojis
-- Add Reactions
-- View Audit Log
+if (!process.env.API_URL) {
+  console.error('❌ Erro: API_URL não está configurado no .env');
+  process.exit(1);
+}
 
-## Comandos disponíveis
+if (!process.env.BOT_API_KEY) {
+  console.error('❌ Erro: BOT_API_KEY não está configurado no .env');
+  process.exit(1);
+}
 
-- /bot-status
-- /postar-painel
-- /fechar-ticket
-- /reabrir-ticket
-- /reivindicar
-- /transferir-ticket
-- /adicionar-usuario
-- /remover-usuario
-- /ticket-info
-- /transcricao
-- /sync
+client.login(process.env.BOT_TOKEN);
 
-## Importante
+process.on('unhandledRejection', error => {
+  console.error('❌ Promise rejeitada não tratada:', error);
+});
 
-Este bot não deve expor tokens ou chaves em código font. Sempre use variáveis de ambiente ou secrets.
+process.on('uncaughtException', error => {
+  console.error('❌ Exceção não capturada:', error);
+  process.exit(1);
+});
